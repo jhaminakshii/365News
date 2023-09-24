@@ -284,15 +284,41 @@ export default class News extends Component {
             this.state = {
               articles: [],
               loading: false,
+              page:1
             };
         }
        async componentDidMount(){
-            let url = "https://newsapi.org/v2/top-headlines?country=in&apiKey=53313403d76f4152ab061ff17a6843f5";
+            let url = "https://newsapi.org/v2/top-headlines?country=in&apiKey=53313403d76f4152ab061ff17a6843f5&page=1&pageSize=20";
             let data =await fetch(url);
             let parsedData = await data.json();
-            this.setState({articles:parsedData.articles})
+            this.setState({articles:parsedData.articles,totalResults:parsedData.totalResults})
         }
+         handlePrevClick=async()=>{
+            console.log("prev");
+            let url =
+              `https://newsapi.org/v2/top-headlines?country=in&apiKey=53313403d76f4152ab061ff17a6843f5&page=${this.state.page-1}&pageSize=20`;
+            let data = await fetch(url);
+            let parsedData = await data.json();
+            this.setState({
+              articles: parsedData.articles,
+              page:this.state.page-1
+            });
+        }
+        handleNextClick =async ()=>{
+            console.log("next");
+            if(this.state.page+1 > Math.ceil(this.state.totalResults/20)){
 
+            }else{
+            let url =
+              `https://newsapi.org/v2/top-headlines?country=in&apiKey=53313403d76f4152ab061ff17a6843f5&page=${this.state.page+1}&pageSize=20`;
+            let data = await fetch(url);
+            let parsedData = await data.json();
+            this.setState({
+              articles: parsedData.articles,
+              page:this.state.page+1
+            });
+        }
+    }
   render() {
     return (
       <div>
@@ -305,12 +331,16 @@ export default class News extends Component {
                   <NewsItems
                     title={elem.title ? elem.title.slice(0, 45) : ""}
                     description={elem.description ? elem.description.slice(0, 88) : ""}
-                    imgUrl={!elem.urlToImage?"https://static.dw.com/image/65611306_6.jpg":elem.urlToImage}
+                    imgUrl={!elem.urlToImage?"https://cdn.ndtv.com/common/images/ogndtv.png":elem.urlToImage}
                     newsUrl={elem.url}
                   />
                 </div>
               );
             })}
+          </div>
+          <div className="d-flex justify-content-between">
+          <button disabled={this.state.page<=1} className="btn btn-dark" onClick={this.handlePrevClick}> &larr; Prev</button>
+          <button disabled={this.state.page+1 > Math.ceil(this.state.totalResults/20)} className="btn btn-dark" onClick={this.handleNextClick}> &rarr; Next</button>
           </div>
         </div>
       </div>
