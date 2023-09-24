@@ -9,8 +9,8 @@ export default class NewsItems extends Component {
         <div className="card my-2" style={{ width: "18rem" }}>
           <img src={imgUrl} className="card-img-top" alt="News Image" style={{ width: "18rem",height:"12rem" }} />
           <div className="card-body">
-            <h5 className="card-title">{title.slice(0,45)}</h5>
-            <p className="card-text">{description.slice(0,88)}</p>
+            <h5 className="card-title">{title}</h5>
+            <p className="card-text">{description}</p>
             <a href={newsUrl} target="_blank" className="btn btn-sm btn-primary">
               Learn More
             </a>
