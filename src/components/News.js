@@ -15,14 +15,18 @@ export default class News extends Component {
       pageSize:PropTypes.number,
       category:PropTypes.string
     }
+    capitalized = (word)=>{
+     return word.charAt(0).toUpperCase()+ word.slice(1)
+     }
 
-     constructor() {
-            super();
+     constructor(props) {
+            super(props);
             this.state = {
               articles: [],
               loading: true,
               page:1
             };
+            document.title = `${this.capitalized(this.props.category)}-365News`;
         }
         // updateNew = async()=>{
         //   let url =
@@ -78,7 +82,7 @@ export default class News extends Component {
     return (
       <div>
         <div className="container my-4">
-          <h1 className="text-center my-5">365News-Top Headlines</h1>
+          <h1 className="text-center my-5">365News-Top {this.capitalized(this.props.category)} Headlines</h1>
           
           {this.state.loading && <Spiner/>}
           <div className="row my-4">
